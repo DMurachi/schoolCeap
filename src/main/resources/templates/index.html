@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="master">
+<HEAD>
+  <STYLE type="text/css">
+    H2 {text-align: center}
+    table {
+      width: 100%;
+      border: 1px solid #000;
+    }
+    th, td {
+      width: 25%;
+      text-align: left;
+      vertical-align: top;
+      border: 1px solid #000;
+      border-collapse: collapse;
+      padding: 0.3em;
+      caption-side: bottom;
+    }
+    th {
+      background: #eee;
+    } 
+  </STYLE>
+</HEAD>
+<body>
+<main layout:fragment="contenido">
+    <div class="col-12">
+        <h2>Products</h2>
+        <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+             th:text="${mensaje}"
+             class="alert">
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Ingredients</th>
+                <th>Categories</th>
+                <th>Quantity</th>
+                <th>Picture</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.ingredients}"></td>
+                <td th:text="${product.categories}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td>
+                  <img th:src="${product.picture}" th:alt="${product.name}" width="80">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

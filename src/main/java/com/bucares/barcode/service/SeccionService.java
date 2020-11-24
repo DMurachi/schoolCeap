@@ -1,14 +1,14 @@
 package com.bucares.barcode.service;
 
-import com.bucares.barcode.model.Estudiante;
 import com.bucares.barcode.model.PlanEstudio;
-import com.bucares.barcode.model.Product;
 import com.bucares.barcode.model.Seccion;
 import com.bucares.barcode.repository.SeccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SeccionService {
     @Autowired
@@ -22,9 +22,11 @@ public class SeccionService {
         return seccionRepository.findAll();
     }
 
-    public Seccion getSeccionById(String id) {
-        return seccionRepository.findByseccionId(id);
+    public Optional<Seccion> getSeccionById(Long id) {
+        return seccionRepository.findById(id);
     }
     public PlanEstudio getPlanEstudio(){ return getPlanEstudio(); }
+    public void deleteSeccionById(Long id){ seccionRepository.deleteById(id); }
+    public void deleteAllSeccion(){ seccionRepository.deleteAll(); }
 
 }

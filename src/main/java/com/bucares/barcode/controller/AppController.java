@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import com.bucares.barcode.service.SeccionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bucares.barcode.model.Product;
-import com.bucares.barcode.service.ProductService;
 
 import static com.bucares.barcode.URLConstants.APP_VERSION_URL;
 import static com.bucares.barcode.URLConstants.HEALTH_ENDPOINT_URL;
@@ -27,7 +26,7 @@ public class AppController {
     private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
     @Autowired
-    private ProductService productService;
+    private SeccionService seccionService;
 
     @Value("${build.version}")
     private String buildVersion;
@@ -35,7 +34,7 @@ public class AppController {
     @GetMapping("/")
     public ModelAndView index() {
         ModelAndView model = new ModelAndView();
-        model.addObject("products", productService.getAllProducts());
+        model.addObject("seccions", seccionService.getAllSeccion());
         model.setViewName("index");
         return model;
     }

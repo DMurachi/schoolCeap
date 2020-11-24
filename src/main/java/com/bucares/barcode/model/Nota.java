@@ -1,43 +1,28 @@
 package com.bucares.barcode.model;
 
 import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Table(name = "nota")
 public class Nota {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private String estudianteId;
+    private Long id;
     @Column
-    private String materiaId;
-    @Column
-    private float nota;
-    @ManyToOne
-    @JoinColumn(name = "notaEstudiante")
-    private Estudiante estudiante;
+    private float notaFinal;
 
     public Nota(){}
-    public float getNota() {
-        return nota;
+    public float getNotaFinal() {
+        return notaFinal;
     }
 
-    public void setNota(float nota) {
-        this.nota = nota;
+    public void setNotaFinal(float notaFinal) {
+        this.notaFinal = notaFinal;
     }
 
-    public String getEstudianteId() {
-        return estudianteId;
-    }
-
-    public String getMateriaId() {
-        return materiaId;
-    }
-
-    public void setEstudianteId(String estudianteId) {
-        this.estudianteId = estudianteId;
-    }
-
-    public void setMateriaId(String materiaId) {
-        this.materiaId = materiaId;
+    public Long getId() {
+        return id;
     }
 }

@@ -1,10 +1,7 @@
 package com.bucares.barcode.controller;
 
 import com.bucares.barcode.model.*;
-import com.bucares.barcode.service.EstudianteService;
-import com.bucares.barcode.service.MateriaService;
-import com.bucares.barcode.service.SeccionService;
-import com.bucares.barcode.service.ProfesorService;
+import com.bucares.barcode.service.*;
 import com.bucares.barcode.utilities.DTOUtils;
 import com.bucares.barcode.utilities.Response;
 import org.slf4j.Logger;
@@ -15,9 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/profesor")
 public class ProfesorController {
     @Autowired
     private EstudianteService estudianteService;
@@ -26,77 +26,72 @@ public class ProfesorController {
     @Autowired
     private SeccionService seccionService;
     @Autowired
-    private ProfesorService userService;
+    private AvanceService avanceService;
+    @Autowired
+    private ProfesorService profesorService;
 
     private static final Logger logger = LoggerFactory.getLogger(ProfesorController.class);
 
-    @GetMapping(value = "user/seccion")
-    @ResponseBody
-    public ResponseEntity<Response<List<Seccion>>> getAllSeccionAsignada(String id) {
+    @RequestMapping(value = "/seccion", method = RequestMethod.GET)
+    public ResponseEntity<Response<List<Seccion>>> getAllSeccionAsignada(String id){
         logger.info("Called resource: getAllSeccionAsignada");
-        Profesor userAux = userService.getById(id);
-        userDTO userdto = new userDTO();
-        DTOUtils.copyProperties(userAux, userdto);
-        List<Seccion> seccionAux = userdto.getSeccionAsignada();
+        Profesor profesorAux = profesorService.getById(id);
+        List<Seccion> seccionAux = profesorAux.getSeccion();
         Response<List<Seccion>> response = new Response<>("0000", seccionAux, null);
         logger.info("Consulted: list of seccion thru userdto in database");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-   /* public Materia validarMateria(String userId){
-        logger.info("called resource: validar materia");
-        List<Materia> materiaAux = materiaService.getAllMaterias();
-        User userAux = userService.getById(userId);
-        for(int i=0; i<materiaAux.size()-1;i++){
-            if(materiaAux.get(i).getId()==userAux.getMateriaAsignada().get(i).getId()){
-                return materiaAux.get(i);
-            }
-        }
-        return
-    }*/
- /*   @GetMapping(value = "user/seccion/{id}")
-    public ResponseEntity<Response<> getAllMateriaAsignada(@PathVariable("id") String id) {
-        User userAux = userService.getById(id);
-        userDTO userdto = new userDTO();
-        DTOUtils.copyProperties(userAux, userdto);
-        List<Materia> materiaAux = userdto.getMateriaAsignada();
+    @RequestMapping(value = "/seccion/{idSeccion}", method = RequestMethod.GET)
+    public ResponseEntity<Response<Optional<Seccion>>> getSeccionAsignada(@PathVariable("idSeccion") Long idS){
+        logger.info("Called resource: getSeccionASignada");
+        Optional<Seccion> seccionAux = seccionService.getSeccionById(idS);
+        Response<Optional<Seccion>> response = new Response<>("0000", seccionAux, null);
+        logger.info("Consulted: Seccion Asignada from profesor");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/materia", method = RequestMethod.GET)
+    public ResponseEntity<Response<List<Materia>>> getMaterias(String id){
+        logger.info("called resource: getMaterias");
+        List<Materia> materiaAux = profesorService.getById(id).getMateria();
         Response<List<Materia>> response = new Response<>("0000", materiaAux, null);
-        logger.info("Consulted: list of materia thru userdto in database");
+        logger.info("Consulted: List de Materias del profe");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @GetMapping(value = "user/seccion/{id}/materia")
-    public ResponseEntity<Response<List<Materia>>> getAllMateriaAsignada(String id) {
-        User userAux = userService.getById(id);
-        userDTO userdto = new userDTO();
-        DTOUtils.copyProperties(userAux, userdto);
-        List<Materia> materiaAux = userdto.getMateriaAsignada();
-        Response<List<Materia>> response = new Response<>("0000", materiaAux, null);
-        logger.info("Consulted: list of materia thru userdto in database");
+    @RequestMapping(value = "/materia/{idMateria}", method = RequestMethod.GET)
+    public ResponseEntity<Response<Optional<Materia>>> getMateriaAsignada(@PathVariable("idMateria")Long idM){
+        logger.info("called resource: getMateriaASignada");
+        Optional<Materia> materiaAux = materiaService.getMateriaById(idM);
+        Response<Optional<Materia>> response = new Response<>("0000", materiaAux, null);
+        logger.info("Consulted: Materia Asignada from profesor");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @GetMapping(value = "user/seccion/materia/estudiante")
-    public ResponseEntity<Response<List<Estudiante>>> getSeccionEstudiante(@Valid @RequestBody
-                                                                           String id){
-        User userAux = userService.getById(id);
-        userDTO userdto = new userDTO();
-        DTOUtils.copyProperties(userAux, userdto);
-        Seccion seccionAux = seccionService.getSeccionById(userAux.getSeccionAsignada()
-                        .get(i).getSeccionId());
-        List<Estudiante> estudianteMatch =
-                        estudianteService.getEstudianteSeccion(seccionAux);
-        Response<List<Estudiante>> response = new Response<>("0000", estudianteMatch, null);
+    @RequestMapping(value = "/seccion/{idSeccion}/estudiantes", method = RequestMethod.GET)
+    public ResponseEntity<Response<List<Estudiante>>> getEstudiantes(@PathVariable("idSeccion") Long idS){
+        logger.info("called resource: getEstudiantes");
+        Optional<Seccion> seccionAux = seccionService.getSeccionById(idS);
+        List<Estudiante> estudiantes = seccionAux.get().getEstudiantes();
+        Response<List<Estudiante>> response = new Response<>("0000", estudiantes, null);
+        logger.info("Consulted: Materia Asignada from profesor");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @PostMapping(value = "user/seccion/materia/estudiante")
-    public void subirNota(float nota){
-
+    @RequestMapping(value = "/materia/{idMateria}/avance", method = RequestMethod.GET)
+    public ResponseEntity<Response<List<Avance>>> getAvance(@PathVariable("idMateria")Long idM){
+        logger.info("called resource: getAvances");
+        List<Avance> avanceAux = materiaService.getMateriaById(idM).get().getAvances();
+        Response<List<Avance>> response = new Response<>("0000", avanceAux, null);
+        logger.info("Consulted: Materia Asignada from profesor");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-  /*  public boolean validarLapso(){
-
+   /* @RequestMapping(value = "/seccion/{idSeccion}/materia/{idMateria}/estudiante/{idE}/avance", method = RequestMethod.GET)
+    public ResponseEntity<Response<List<Avance>>> actualizarNota(@PathVariable("idSeccion") Long idS, @PathVariable("idMateria") Long idM,
+                                                              @PathVariable("idE") Long idE, Avance avance)
+    {
+        List<Estudiante> estudiantes = estudianteService.getEstudianteSeccion(seccionService.getSeccionById(idS));
+        List<Materia> materias = estudianteService.getOneEstudiante(idE).getSeccion().getPlanEstudio().getMaterias();
+        List<Avance> avances = materiaService.getMateriaById(idM).getAvances();
+        Response<List<Avance>> response = new Response<>("0000", avances , null);
+        logger.info("Consulted: Materia Asignada from profesor");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }*/
 
 }
-//RECUERDA ESTO ES LO QUE VERA EL PROFE
-/*TERMINAR ESTE CONTROLADOR, VALIDAR TODO, TERMINAR EL OTRO CONTROLADOR, VALIDAR TODO
- *                                     LUEGO CHECK QUE CADA FUNCION HACE LO QUE SE SUPONE
- * ESTO PARA MAÑANA ESTAMOS EN 6. PARA LUNES 9 ESTO TIENE QUE ESTAR LISTO.*/

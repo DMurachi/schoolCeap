@@ -9,45 +9,51 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "estudiante")
 public class Estudiante {
+    private Long id;
+    @Column(name = "e_cedula",length = 11)
+    private String cedula;
+    @Column(name = "e_name",length = 16)
+    private String name;
+    private Seccion seccion;
+    private AnioEscolar anioescolar;
+    @Column(name = "e_promedio")
+    private float promedio;
+
+    public Estudiante(){}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true)
-    private String id;
-    @Column(name = "Cedula", unique = true, nullable = false)
-    private String cedula;
-    @Column(name = "Nombre", nullable = false)
-    private String name;
-    @OneToOne
-    private Seccion seccion;
-    @OneToMany
-    private List<Nota> notaEstudiante;
-    @ManyToOne
-    private AnioEscolar anio;
+    public Long getId(){ return this.id; }
 
-    public String getId(){ return this.id; }
-    public void setId(String id){ this.id=id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCedula(){ return this.cedula; }
     public void setCedula(String cedula){ this.cedula= cedula; }
     public String getName(){ return this.name; }
     public void setName(String name){ this.name = name; }
+    @ManyToOne
+    @JoinColumn(name = "seccion_s_id")
     public Seccion getSeccion() {
         return this.seccion;
     }
     public void setSeccion(Seccion seccion) {
         this.seccion = seccion;
     }
-    public List<Nota> getNotaEstudiante() {
-        return notaEstudiante;
+    @ManyToOne
+    @JoinColumn(name = "anioescolar_ae_id")
+    public AnioEscolar getAnioescolar() {
+        return anioescolar;
     }
-    public void setNotaEstudiante(List<Nota> notaEstudiante) {
-        this.notaEstudiante = notaEstudiante;
+    public void setAnioescolar(AnioEscolar anioescolar) {
+        this.anioescolar = anioescolar;
     }
 }

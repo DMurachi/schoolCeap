@@ -1,4 +1,4 @@
-package com.bucares.barcode.service;
+/*package com.bucares.barcode.service;
 
 import java.util.List;
 
@@ -26,4 +26,4 @@ public class ProductService {
     return productRepository.findByBarcode(barcode);
   }
 
-}
+}*/

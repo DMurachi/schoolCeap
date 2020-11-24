@@ -14,28 +14,38 @@ import java.util.List;
 @Entity
 @Table(name = "anioEscolar")
 public class AnioEscolar {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private String anioId;
-    @OneToMany
-    private List<Seccion> secciones;
-    @OneToMany
-    private List<Estudiante> estudiantes;
+    private Long id;
+    private List<Seccion> seccion;
+    private List<Estudiante> estudiante;
 
+    public AnioEscolar(){ }
+
+    @OneToMany(mappedBy = "anioescolar", cascade = CascadeType.ALL)
     public List<Seccion> getSecciones() {
-        return secciones;
+        return seccion;
     }
 
     public void setSecciones(List<Seccion> secciones) {
-        this.secciones = secciones;
+        this.seccion = secciones;
     }
 
-    public String getAnioId() {
-        return anioId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ae_id")
+    public Long getId() {
+        return id;
     }
 
-    public void setAnioId(String anioId) {
-        this.anioId = anioId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @OneToMany(mappedBy = "anioescolar", cascade = CascadeType.ALL)
+    public List<Estudiante> getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(List<Estudiante> estudiante) {
+        this.estudiante = estudiante;
     }
 }

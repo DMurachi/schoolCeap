@@ -1,38 +1,43 @@
 package com.bucares.barcode.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "profesor")
 public class Profesor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private String id;
-
+    private Long id;
+    @Column(name = "p_name")
     private String name;
-    @OneToMany
-    private List<Seccion> seccionAsignada;
-    @OneToMany
-    private List<Materia> materiaAsignada;
+    private List<Seccion> seccion;
+    private List<Materia> materia;
 
     public Profesor(){}
-    public Profesor(String password, String name, List<Seccion> seccionAsignada, String username,
-                    List<Materia> materiaAsignada){
-        this.name = name;
-        this.seccionAsignada = seccionAsignada;
-        this.materiaAsignada = materiaAsignada;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "p_id")
+    public Long getId(){ return this.id; }
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getUserID(){ return this.id; }
-    public void setUserID(String userid){ this.id = userid; }
+
     public String getName(){return this.name; }
     public void setName(String name){ this.name = name; }
-    public List<Seccion> getSeccionAsignada(){ return this.seccionAsignada; }
-    public void setSeccionAsignada(List<Seccion> seccionAsignada){
-        this.seccionAsignada = seccionAsignada;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "profesor_seccion", joinColumns = @JoinColumn(name = "profesor_p_id", referencedColumnName = "p_id"),
+            inverseJoinColumns = @JoinColumn(name = "seccion_s_id", referencedColumnName = "s_id"))
+    public List<Seccion> getSeccion(){ return this.seccion; }
+    public void setSeccion(List<Seccion> seccionAsignada){
+        this.seccion = seccionAsignada;
     }
-    public List<Materia> getMateriaAsignada(){ return this.materiaAsignada; }
-    public void setMateriaAsignada(List<Materia> materiaAsignada){
-        this.materiaAsignada = materiaAsignada;
+
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL)
+    public List<Materia> getMateria(){ return this.materia; }
+    public void setMateria(List<Materia> materiaAsignada){
+        this.materia = materiaAsignada;
     }
 }

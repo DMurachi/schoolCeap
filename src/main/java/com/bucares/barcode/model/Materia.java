@@ -6,23 +6,57 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Table(name = "materia")
 public class Materia {
+
+    private Long id;
+    @Column(name = "m_name")
+    private String name;
+    private Profesor profesor;
+
+    private List<Avance> avance;
+
+    private PlanEstudio planestudio;
+
+    public Materia(){}
+    public String getNombre(){ return this.name; }
+    public void setNombre(String name){ this.name = name; }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true)
-    private String materiaId;
-    @Column(name="nombreMateria")
-    private String nombre;
+    @Column(name = "m_id")
+    public Long getId(){ return this.id; }
 
-    public Materia(String nombre, String id) {
-        this.nombre = nombre;
-        this.materiaId = id;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getNombre(){ return this.nombre; }
-    public void setNombre(String nombre){ this.nombre = nombre; }
-    public String getId(){ return this.materiaId; }
-    public void setId(String materiaId){ this.materiaId = materiaId; }
 
+    @OneToMany(mappedBy = "materia", cascade = CascadeType.ALL)
+    public List<Avance> getAvances() {
+        return avance;
+    }
+
+    public void setAvances(List<Avance> avances) {
+        this.avance = avances;
+    }
+    @ManyToOne
+    @JoinColumn(name = "profesor_p_id")
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+    @ManyToOne
+    @JoinColumn(name = "planestudio_pl_id")
+    public PlanEstudio getPlanestudio() {
+        return planestudio;
+    }
+
+    public void setPlanestudio(PlanEstudio planestudio) {
+        this.planestudio = planestudio;
+    }
 }

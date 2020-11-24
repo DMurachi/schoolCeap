@@ -1,13 +1,12 @@
 package com.bucares.barcode.service;
 
 import com.bucares.barcode.model.Materia;
-import com.bucares.barcode.model.Product;
 import com.bucares.barcode.repository.MateriaRepository;
-import com.bucares.barcode.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MateriaService {
@@ -22,9 +21,11 @@ public class MateriaService {
         return materiaRepository.findAll();
     }
 
-    public Materia getMateriaByNombre(String nombre) {
-        return materiaRepository.findByNombre(nombre);
+    public Optional<Materia> getMateriaById(Long id){ return materiaRepository.findById(id); }
+
+    public void deleteMateriaById(Long id) { materiaRepository.deleteById(id);
     }
 
-    public Materia getMateriaById(String id){ return materiaRepository.findBymateriaId(id); }
+    public void deleteAllSeccion() {    materiaRepository.deleteAll();
+    }
 }

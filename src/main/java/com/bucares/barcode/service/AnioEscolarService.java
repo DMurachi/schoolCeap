@@ -1,13 +1,12 @@
 package com.bucares.barcode.service;
 
 import com.bucares.barcode.model.AnioEscolar;
-import com.bucares.barcode.model.Product;
 import com.bucares.barcode.repository.AnioEscolarRepository;
-import com.bucares.barcode.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnioEscolarService {
@@ -19,7 +18,13 @@ public class AnioEscolarService {
     public List<AnioEscolar> getAllAnioEscolar() {
         return anioEscolarRepository.findAll();
     }
-    public AnioEscolar getById(String id) {
-        return anioEscolarRepository.findByanioId(id);
+    public Optional<AnioEscolar> getById(Long id) {
+        return anioEscolarRepository.findById(id);
+    }
+
+    public void deleteAnioEscolarById(Long idAe) { anioEscolarRepository.deleteById(idAe);
+    }
+
+    public void deleteAllAnioEscolar() { anioEscolarRepository.deleteAll();
     }
 }

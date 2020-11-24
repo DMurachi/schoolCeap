@@ -9,26 +9,40 @@ import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "planestudio")
 public class PlanEstudio {
-    @OneToMany
-    private List<Materia> materias;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "planID")
-    private int id;
 
+    private List<Materia> materia;
+
+    private Long id;
+
+    private Seccion seccion;
+
+    public PlanEstudio(){}
+    @OneToMany(mappedBy = "planestudio", cascade = CascadeType.ALL)
     public List<Materia> getMaterias(){
-        return this.materias;
+        return this.materia;
     }
     public void setMaterias(List<Materia> mats){
-        this.materias = mats;
+        this.materia = mats;
     }
-    public int getId(){ return this.id; }
-    public void setId(int planId){ this.id = planId; }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "pl_id")
+    public Long getId(){ return this.id; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seccion_s_id", referencedColumnName = "s_id")
+    public Seccion getSeccion() {
+        return seccion;
+    }
+
+    public void setSeccion(Seccion seccion) {
+        this.seccion = seccion;
+    }
 }

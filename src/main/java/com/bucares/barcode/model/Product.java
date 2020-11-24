@@ -1,4 +1,4 @@
-package com.bucares.barcode.model;
+/*package com.bucares.barcode.model;
 
 import javax.persistence.*;
 
@@ -39,4 +39,4 @@ public class Product {
 
   @Column
   private String picture;
-}
+}*/

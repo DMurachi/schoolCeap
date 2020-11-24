@@ -1,9 +1,9 @@
-com/bucares/barcode/controller/AppController.class
-com/bucares/barcode/model/Product.class
-com/bucares/barcode/utilities/Response.class
-com/bucares/barcode/service/ProductService.class
-com/bucares/barcode/repository/ProductRepository.class
-com/bucares/barcode/controller/ProductController.class
 com/bucares/barcode/BardcodeApp.class
-com/bucares/barcode/WebConfig.class
 com/bucares/barcode/URLConstants.class
+com/bucares/barcode/model/Product.class
+com/bucares/barcode/WebConfig.class
+com/bucares/barcode/controller/AppController.class
+com/bucares/barcode/utilities/Response.class
+com/bucares/barcode/repository/ProductRepository.class
+com/bucares/barcode/controller/ProfesorController.class
+com/bucares/barcode/service/ProductService.class
